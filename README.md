@@ -1,4 +1,4 @@
-
+[TOC]
 
 ## 创建型模式
 
@@ -8,7 +8,7 @@
 
 - 工厂方法模式结构
 
-  ![image-20210622111433819](resource\image-20210622111433819-1624331675181.png)
+  ![image-20210622111433819](https://github.com/lining9717/DesignPatterns/blob/main/resource/image-20210622111433819-1624331675181.png)
   1. **产品** （Product） 将会对**接口**进行声明。 对于所有由创建者及其子类构建的对象， 这些接口都是通用的。
 
   2. **具体产品** （Concrete Products） 是产品接口的不同实现。
@@ -62,7 +62,7 @@
 
 - 抽象工厂模式
 
-  ![image-20210622161604202](resource\\image-20210622161604202-1624349765342.png)
+  ![image-20210622161604202](https://github.com/lining9717/DesignPatterns/blob/main/resource/image-20210622161604202-1624349765342.png)
   1. **抽象产品** （Abstract Product） 为构成系列产品的一组不同但相关的产品声明接口。
   2. **具体产品** （Concrete Product） 是抽象产品的多种不同类型实现。 
   3. **抽象工厂** （Abstract Factory） 接口声明了一组创建各种抽象产品的方法。
@@ -111,7 +111,7 @@
 
 - 生成器模式
 
-  ![image-20210624160425670](resource\\image-20210624160425670-1624521866926.png)
+  ![image-20210624160425670](https://github.com/lining9717/DesignPatterns/blob/main/resource/image-20210624160425670-1624521866926.png)
   1. **生成器 （Builder）** 接口声明在所有类型生成器中通用的产品构造步骤。
   2. **具体生成器** （Concrete Builders） 提供构造过程的不同实现。 具体生成器也可以构造不遵循通用接口的产品。
   3. **产品** （Products） 是最终生成的对象。 由不同生成器构造的产品无需属于同一类层次结构或接口。
