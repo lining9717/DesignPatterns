@@ -165,5 +165,60 @@
 
 
 
+### 原型模式
+
+- **原型模式**是一种创建型设计模式， 能够**复制已有对象**， 而又无需使代码依赖它们所属的类。
+
+- 原型模式将克隆过程委派给被克隆的实际对象。模式为所有支持克隆的对象声明了一个通用接口， 该接口让你能够克隆对象， 同时又无需将代码和对象所属类耦合。 通常情况下， 这样的接口中仅包含一个 `克隆`方法。
+
+- 原型模式结构
+
+  ![image-20210628104006961](https://github.com/lining9717/DesignPatterns/blob/main/resource/image-20210628104006961.png)
+
+  1. **原型** （Prototype） 接口将对克隆方法进行声明。 在绝大多数情况下， 其中只会有一个名为 `clone`克隆的方法。
+  2. **具体原型** （Concrete Prototype） 类将实现克隆方法。 除了将原始对象的数据复制到克隆体中之外， 该方法有时还需处理克隆过程中的极端情况， 例如克隆关联对象和梳理递归依赖等等。
+  3. **客户端** （Client） 可以复制实现了原型接口的任何对象。
+
+- 原型注册表实现
+
+  ![image-20210628104240820](https://github.com/lining9717/DesignPatterns/blob/main/resource/image-20210628104240820.png)
+
+  - **原型注册表** （Prototype Registry） 提供了一种访问常用原型的简单方法， 其中存储了一系列可供随时复制的预生成对象。 最简单的注册表原型是一个 `名称 → 原型`的哈希表。 但如果需要使用名称以外的条件进行搜索， 你可以创建更加完善的注册表版本。
+
+- 适用场景
+  - 如果你需要复制一些对象， 同时又希望代码独立于这些对象所属的具体类， 可以使用原型模式。
+    - 这一点考量通常出现在代码需要处理第三方代码通过接口传递过来的对象时。 即使不考虑代码耦合的情况， 你的**代码也不能依赖这些对象所属的具体类**， 因为你不知道它们的具体信息。
+  - 如果子类的区别仅在于其对象的初始化方式， 那么你可以使用该模式来减少子类的数量。 别人创建这些子类的目的可能是为了创建特定类型的对象。
+    - 在原型模式中， 你可以使用一系列预生成的、 各种类型的对象作为原型。
+    - 客户端不必根据需求对子类进行实例化， 只需找到合适的原型并对其进行克隆即可。
+- 实现方式
+  - 创建原型接口， 并在其中声明 `克隆`方法。 如果你已有类层次结构， 则只需在其所有类中添加该方法即可。
+  - 原型类必须另行定义一个以该类对象为参数的构造函数。 （拷贝构造函数）
+  - 克隆方法通常只有一行代码： 使用 `new`运算符调用原型版本的构造函数。
+  - 你还可以创建一个中心化原型注册表， 用于存储常用原型。
+    - 可以新建一个**工厂类**来实现注册表， 或者在原型基类中添加一个获取原型的静态方法。 该方法必须能够根据客户端代码设定的条件进行搜索。 搜索条件可以是简单的字符串， 或者是一组复杂的搜索参数。 找到合适的原型后， 注册表应对原型进行克隆， 并将复制生成的对象返回给客户端。
+    - 最后还要将对子类构造函数的直接调用替换为对原型注册表工厂方法的调用。
+- 优缺点
+  - 优点
+    - 克隆对象， 而无需与它们所属的具体类相耦合。
+    - 克隆预生成原型， 避免反复运行初始化代码。
+    - 更方便地生成复杂对象。
+    - 可以用继承以外的方式来处理复杂对象的不同配置。
+  - 缺点
+    - 克隆包含循环引用的复杂对象可能会非常麻烦。
+- 与其他设计模式的比较
+  - 在许多设计工作的初期都会使用[工厂方法模式](https://refactoringguru.cn/design-patterns/factory-method) （较为简单， 而且可以更方便地通过子类进行定制）， 随后演化为使用[抽象工厂模式](https://refactoringguru.cn/design-patterns/abstract-factory)、 [原型模式](https://refactoringguru.cn/design-patterns/prototype)或[生成器模式](https://refactoringguru.cn/design-patterns/builder) （更灵活但更加复杂）。
+  - [抽象工厂模式](https://refactoringguru.cn/design-patterns/abstract-factory)通常基于一组[工厂方法](https://refactoringguru.cn/design-patterns/factory-method)， 但你也可以使用[原型模式](https://refactoringguru.cn/design-patterns/prototype)来生成这些类的方法。
+  - [原型](https://refactoringguru.cn/design-patterns/prototype)可用于保存[命令模式](https://refactoringguru.cn/design-patterns/command)的历史记录。
+  - 大量使用[组合模式](https://refactoringguru.cn/design-patterns/composite)和[装饰模式](https://refactoringguru.cn/design-patterns/decorator)的设计通常可从对于[原型](https://refactoringguru.cn/design-patterns/prototype)的使用中获益。 你可以通过该模式来复制复杂结构， 而非从零开始重新构造。
+  - [原型](https://refactoringguru.cn/design-patterns/prototype)并不基于继承， 因此没有继承的缺点。 另一方面， *原型*需要对被复制对象进行复杂的初始化。 [工厂方法](https://refactoringguru.cn/design-patterns/factory-method)基于继承， 但是它不需要初始化步骤。
+  - 有时候[原型](https://refactoringguru.cn/design-patterns/prototype)可以作为[备忘录模式](https://refactoringguru.cn/design-patterns/memento)的一个简化版本， 其条件是你需要在历史记录中存储的对象的状态比较简单， 不需要链接其他外部资源， 或者链接可以方便地重建。
+  - [抽象工厂](https://refactoringguru.cn/design-patterns/abstract-factory)、 [生成器](https://refactoringguru.cn/design-patterns/builder)和[原型](https://refactoringguru.cn/design-patterns/prototype)都可以用[单例模式](https://refactoringguru.cn/design-patterns/singleton)来实现。
+- 代码
+  - 原型可以简单地通过 `clone`或 `copy`等方法来识别。
+- 总结
+  - 原型模式主要有一个原型基类（包含一个clone方法），多个具体原型子类
+  - 可使用工厂方法模式管理原型子类的生成，在创建对象的方法中适用clone方法返回一个拷贝对象
+
 
 
