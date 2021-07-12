@@ -275,9 +275,9 @@
   - 不能返回指针，因为无法避免用户使用`delete instance`导致对象被提前销毁
 
     ```cpp
-    static Singleton* get_instance(){
+    static Singleton& get_instance(){
         static Singleton instance;
-        return &instance;
+        return instance;
     }
     ```
 
